@@ -23,13 +23,19 @@
 syslog = require('./lib/syslog').getInstance()
 config = require('./lib/configloader').load('index.config')
 
+SessionProvider = require('./lib/sessionProvider').SessionProvider
+
 express = require('express')
 index_web = express.createServer()
 index_web.set('view engine', 'jade')
 index_web.use(express.static(__dirname + '/public'))
 
+session_provider = new SessionProvider('localhost', 27017)
+
 index_web.get '/', (req, res) ->
-  res.render('index')
+  session_provider.findAll (error, result) ->
+    #res.send(result)
+    res.render 'index', {locals:{ses:result}}
 
 index_web.listen(config['index_web_port'])
 
