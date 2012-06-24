@@ -6,7 +6,7 @@ mongoose.connect('mongodb://localhost/a2r_test') ;
 
 describe('session model', function() {
   
-  var sessions = mongoose.model('Sessions', require('../models/models.js').Sessions) ;
+  var sessions = mongoose.model('Sessions', require('../lib/models.js').Sessions) ;
 
   it('should save sessions', function(done) {
     var session = new sessions({
