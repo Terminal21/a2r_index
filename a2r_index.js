@@ -22,7 +22,6 @@ a2r_index.use(express.bodyParser()) ;
 a2r_index.post('/', function(req, res) {
   var data = req.body ;
   var session = new sessions(data) ;
-  console.log(session) ;
   session.save(function (err) {
     if (err) {
       return res.json("bad request", 400) ;
@@ -38,7 +37,6 @@ a2r_index.get('/show.:format?', function(req, res) {
       return syslog.log(syslog.LOG_ERROR, err) ;
     } else {
       if (req.params.format == "json") {
-        // ToDo: never send the token
         return res.json(docs) ;
       } else {
         return res.render('index', { sessions: docs}) ;

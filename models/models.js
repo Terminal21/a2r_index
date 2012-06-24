@@ -6,6 +6,7 @@ var Sessions = new Schema({
   date    : Date
 }) ;
 
+// Generate tokens on save
 Sessions.pre('save', true, function(next, done) {
   next() ;
   this.token = "" ;
@@ -17,6 +18,10 @@ Sessions.pre('save', true, function(next, done) {
   }
 
   done() ;
+}) ;
+
+Sessions.post('init', function() {
+  this.token = 'I won\'t tell you that!' ;
 }) ;
 
 module.exports.Sessions = Sessions ;

@@ -57,8 +57,15 @@ describe('session model', function() {
       if (err) {
         throw err ;
       } else {
-        session.token.length.should.equal(128) ;
+        session.token.should.have.length(128) ;
       }
+      done() ;
+    }) ;
+  }) ;
+
+  it('should not export the token', function(done) {
+    sessions.findOne({ title: "test125"}, function(err, doc) {
+      doc.token.should.equal('I won\'t tell you that!') ;
       done() ;
     }) ;
   }) ;
