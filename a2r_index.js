@@ -4,6 +4,7 @@
 
 var mongoose = require('mongoose') ;
 var express = require('express');
+var Schema = mongoose.Schema ;
 
 var syslog = require('./lib/syslog').getInstance();
 var config = require('./lib/configloader').load('index.config');
@@ -13,12 +14,25 @@ var sessions = mongoose.model('Sessions', require('./models/models.js').Sessions
 //ToDo: read settings from config
 mongoose.connect('mongodb://localhost/a2r_index') ;
 
-index_web = express.createServer();
-index_web.set('view engine', 'jade');
-index_web.use(express["static"](__dirname + '/public'));
-index_web.use(express.bodyParser()) ;
+a2r_index = express.createServer();
+a2r_index.set('view engine', 'jade');
+a2r_index.use(express["static"](__dirname + '/public'));
+a2r_index.use(express.bodyParser()) ;
 
-index_web.get('/show.:format?', function(req, res) {
+a2r_index.post('/', function(req, res) {
+  var data = req.body ;
+  var session = new sessions(data) ;
+  console.log(session) ;
+  session.save(function (err) {
+    if (err) {
+      return res.json("bad request", 400) ;
+    } else {
+      return res.json({token: session.token}) ;
+    }
+  }) ;
+}) ;
+
+a2r_index.get('/show.:format?', function(req, res) {
   sessions.find({}, function(err, docs) {
     if (err) {
       return syslog.log(syslog.LOG_ERROR, err) ;
@@ -33,7 +47,7 @@ index_web.get('/show.:format?', function(req, res) {
   }) ;
 });
 
-index_web.get('/show/:id.:format?', function(req, res) {
+a2r_index.get('/show/:id.:format?', function(req, res) {
   sessions.findById(req.params.id, function(err, doc) {
     if (err) {
       return syslog.log(syslog.LOG_ERROR, err) ;
@@ -47,7 +61,7 @@ index_web.get('/show/:id.:format?', function(req, res) {
   }) ;
 }) ;
 
-index_web.listen(config['index_web_port']);
+a2r_index.listen(config['index_web_port']);
 
 console.log('Server running');
-syslog.log(syslog.LOG_INFO, 'starting index server on port ' + config['notify_server_port']);
+syslog.log(syslog.LOG_INFO, 'starting a2r_index server on port ' + config['notify_server_port']);

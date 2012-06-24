@@ -23,4 +23,43 @@ describe('session model', function() {
       done() ;
     }) ;
   }) ;
+
+  it('should need a title', function(done) {
+    var session = new sessions({
+      token: "ABC"
+    }) ;
+    session.save(function (err) {
+      err.name.should.equal('ValidationError') ;
+      done() ;
+    })
+  }) ;
+
+  it('should generate tokens on save', function(done) {
+    var session = new sessions({
+      title: "test124"
+    }) ;
+    session.save(function(err) {
+      if (err) {
+        throw err ;
+      } else {
+        session.token.length.should.equal(128) ;
+      }
+      done() ;
+    }) ;
+  }) ;
+  
+  it('should overwrite given tokens on save', function(done) {
+    var session = new sessions({
+      title: "test125",
+      token: "ABC"
+    }) ;
+    session.save(function(err) {
+      if (err) {
+        throw err ;
+      } else {
+        session.token.length.should.equal(128) ;
+      }
+      done() ;
+    }) ;
+  }) ;
 });
