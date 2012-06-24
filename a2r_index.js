@@ -2,28 +2,50 @@
 /* A2R Index Server
 */
 
-syslog = require('./lib/syslog').getInstance();
+var mongoose = require('mongoose') ;
+var express = require('express');
 
-config = require('./lib/configloader').load('index.config');
+var syslog = require('./lib/syslog').getInstance();
+var config = require('./lib/configloader').load('index.config');
 
-SessionProvider = require('./lib/sessionProvider').SessionProvider;
+var sessions = mongoose.model('Sessions', require('./models/models.js').Sessions) ;
 
-express = require('express');
+//ToDo: read settings from config
+mongoose.connect('mongodb://localhost/a2r_index') ;
+
 index_web = express.createServer();
 index_web.set('view engine', 'jade');
 index_web.use(express["static"](__dirname + '/public'));
+index_web.use(express.bodyParser()) ;
 
-session_provider = new SessionProvider('localhost', 27017);
-
-index_web.get('/', function(req, res) {
-  return session_provider.findAll(function(error, result) {
-    return res.render('index', {
-      locals: {
-        ses: result
+index_web.get('/show.:format?', function(req, res) {
+  sessions.find({}, function(err, docs) {
+    if (err) {
+      return syslog.log(syslog.LOG_ERROR, err) ;
+    } else {
+      if (req.params.format == "json") {
+        // ToDo: never send the token
+        return res.json(docs) ;
+      } else {
+        return res.render('index', { sessions: docs}) ;
       }
-    });
-  });
+    }
+  }) ;
 });
+
+index_web.get('/show/:id.:format?', function(req, res) {
+  sessions.findById(req.params.id, function(err, doc) {
+    if (err) {
+      return syslog.log(syslog.LOG_ERROR, err) ;
+    } else {
+      if (req.params.format == "json") {
+        return res.json(doc) ;
+      } else {
+        return res.render('show', { session: doc }) ;
+      }
+    }
+  }) ;
+}) ;
 
 index_web.listen(config['index_web_port']);
 
