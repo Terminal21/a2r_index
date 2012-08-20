@@ -7,7 +7,7 @@ var express = require('express');
 var syslog = require('./lib/syslog').getInstance();
 var config = require('./lib/configloader').load('index.config');
 
-a2r_index = express.createServer();
+a2r_index = express();
 a2r_index.set('view engine', 'jade');
 a2r_index.use(express["static"](__dirname + '/public'));
 a2r_index.use(express.bodyParser()) ;
