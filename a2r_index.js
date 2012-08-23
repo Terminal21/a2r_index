@@ -18,7 +18,7 @@ a2r_index.use(express.bodyParser()) ;
 
 require('./lib/routes').setRoutes(a2r_index) ;
 
-a2r_index.listen(config['index_web_port']);
+a2r_index.listen(config['index_server_port']);
 
 console.log('Server running');
-syslog.log(syslog.LOG_INFO, 'starting a2r_index server on port ' + config['notify_server_port']);
+syslog.log(syslog.LOG_INFO, 'starting a2r_index server on port ' + config['index_server_port']);
