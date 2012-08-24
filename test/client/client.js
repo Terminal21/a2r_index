@@ -23,15 +23,32 @@ request.post({
   })
 }, function(error, response, body){
   console.log(body);
+  var token = JSON.parse(body).token ;
+  
+  request.put({
+    url: 'http://localhost:7000/',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: 'update session without sensors',
+      token: token,
+      date: new Date()
+   })
+  }, function(error, response, body){
+    console.log(body);
+  });
+
 });
 
-request.post({
+request.put({
   url: 'http://localhost:7000/',
   headers: {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    title: 'another session without sensors',
+    title: 'update session without sensors',
+    token: "123",
     date: new Date()
  })
 }, function(error, response, body){
