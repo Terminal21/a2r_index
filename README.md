@@ -9,7 +9,7 @@ Prerequisites
 -------------
 
 * nodejs (tested with 0.8)
-* mongodb
+* mongodb (up and running)
 
 for dependencies
 
@@ -25,7 +25,7 @@ Installation
 
 ### Install dependencies
 
-> npm install optimis express node-syslog cjson mongoose
+> npm install optimist express node-syslog cjson mongoose
 
 ### Start server
 
