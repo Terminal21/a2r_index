@@ -14,7 +14,7 @@ describe('configloader', function() {
     config = require('../lib/configloader').load('nonexistent.config');
     config['notify_server_port'].should.equal(7010);
     config['index_server_address'].should.equal('localhost');
-    return config['index_server_port'].should.equal(7001);
+    return config['index_server_port'].should.equal(7000);
   });
   
   it('should parse config files', function() {

@@ -9,23 +9,22 @@ describe('syslog', function() {
   it('should provide instances', function() {
     return (function() {
       var syslog;
-      return syslog = require('../lib/syslog').getInstance();
+      return syslog = require('../lib/syslog');
     }).should.not["throw"]('');
   });
 
   it('should have a log function', function() {
     var syslog;
-    syslog = require('../lib/syslog').getInstance();
+    syslog = require('../lib/syslog');
     return (function() {
       return syslog.log(syslog.LOG_INFO, 'Test');
     }).should.not["throw"]('');
   });
 
   return it('should be a singleton', function() {
-    var sl, syslog1, syslog2;
-    sl = require('../lib/syslog');
-    syslog1 = sl.getInstance();
-    syslog2 = sl.getInstance();
+    var syslog1, syslog2;
+    syslog1 = require('../lib/syslog');
+    syslog2 = require('../lib/syslog');
     return assert.strictEqual(syslog1, syslog2);
   });
 });
