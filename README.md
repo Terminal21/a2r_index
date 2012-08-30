@@ -27,7 +27,7 @@ Installation
 
 ### Install dependencies
 
-> npm install optimist express node-syslog cjson mongoose
+> npm install jade optimist express node-syslog cjson mongoose
 
 ### Start server
 
