@@ -23,6 +23,8 @@ Installation
 
 > git clone git://github.com/Terminal21/a2r_index.git
 
+> cd a2r_index
+
 ### Install dependencies
 
 > npm install optimist express node-syslog cjson mongoose
